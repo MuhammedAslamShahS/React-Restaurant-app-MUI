@@ -1,7 +1,13 @@
 import { styled } from "@mui/system";
 import { Button } from "@mui/material";
 
-const StyledButton = styled(Button)(
+const StyledButton = styled(Button, {
+  shouldForwardProp: (prop) =>
+    prop !== "backgroundColor" &&
+    prop !== "welcomeBtn" &&
+    prop !== "guideBtn" &&
+    prop !== "getStartedBtn",
+})(
   ({
     theme,
     backgroundColor,
