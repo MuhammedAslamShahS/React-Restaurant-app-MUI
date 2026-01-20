@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { styled } from "@mui/system";
-import { Box, Typography, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 import CustomButton from "../CustomButton/CustomButton";
 import logoImg from "../../assets/logo.png";
 
@@ -9,6 +20,8 @@ import FeaturedPlaylistIcon from "@mui/icons-material/FeaturedPlayList";
 import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
 import HomeIcon from "@mui/icons-material/Home";
 import ContactsIcon from "@mui/icons-material/Contacts";
+
+/* ---------- styled components ---------- */
 
 const NavBarLinksBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -45,12 +58,16 @@ const CustomMenuIcon = styled(MenuIcon)(({ theme }) => ({
   },
 }));
 
+/* ---------- component ---------- */
+
 const Header = () => {
+  const navigate = useNavigate(); // ✅ hook INSIDE component
+
   const nav_titles = [
     { path: "/", display: "Home" },
-    { path: "/", display: "Dishes" },
-    { path: "/", display: "Services" },
-    { path: "/", display: "About Us" },
+    { path: "/dishes", display: "Dishes" },
+    { path: "/services", display: "Services" },
+    { path: "/about", display: "About Us" },
   ];
 
   const [mobileMenu, setMobileMenu] = useState({ left: false });
@@ -63,7 +80,11 @@ const Header = () => {
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(anchor, false)}>
       <List>
         {nav_titles.map((item, index) => (
-          <ListItem key={item.display} disablePadding>
+          <ListItem
+            key={item.display}
+            disablePadding
+            onClick={() => navigate(item.path)}
+          >
             <ListItemButton>
               <ListItemIcon>
                 {index === 0 && <HomeIcon />}
@@ -92,7 +113,11 @@ const Header = () => {
       {/* LEFT */}
       <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
         <CustomMenuIcon onClick={toggleDrawer("left", true)} />
-        <Drawer anchor="left" open={mobileMenu.left} onClose={toggleDrawer("left", false)}>
+        <Drawer
+          anchor="left"
+          open={mobileMenu.left}
+          onClose={toggleDrawer("left", false)}
+        >
           {drawerList("left")}
         </Drawer>
 
@@ -100,7 +125,12 @@ const Header = () => {
 
         <NavBarLinksBox>
           {nav_titles.map((item) => (
-            <NavBarLink key={item.display}>{item.display}</NavBarLink>
+            <NavBarLink
+              key={item.display}
+              onClick={() => navigate(item.path)}
+            >
+              {item.display}
+            </NavBarLink>
           ))}
         </NavBarLinksBox>
       </Box>
@@ -108,7 +138,11 @@ const Header = () => {
       {/* RIGHT */}
       <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
         <NavBarLink>Sign Up</NavBarLink>
-        <CustomButton backgroundColor="#0F1B4C" color="#fff" buttonText="Register" />
+        <CustomButton
+          backgroundColor="#0F1B4C"
+          color="#fff"
+          buttonText="Register"
+        />
       </Box>
     </Box>
   );
